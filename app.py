@@ -192,9 +192,6 @@ def save_check(country: str, android_app_id: str, ios_app_id: str, keywords: lis
     conn.commit()
     conn.close()
 
-
-def get_recent_checks(limit: int = 10) -> list[dict[str, Any]]:
-
 def get_recent_checks(limit: int = 10) -> list[dict]:
     conn = get_conn()
     checks = conn.execute(
