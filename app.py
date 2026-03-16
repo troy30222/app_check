@@ -107,10 +107,18 @@ def parse_keywords(raw: str) -> list[str]:
 def get_google_play_rank(keyword: str, target_package_id: str, country: str = "tw", lang: str = "zh") -> str:
     if gp_search is None:
         return "套件缺失: google-play-scraper"
+
     try:
         results = gp_search(keyword, lang=lang, country=country, n_hits=100)
+
         for idx, item in enumerate(results):
             if item.get("appId") == target_package_id:
+                return str(idx + 1)
+
+        return "100+ (未進榜)"
+
+    except Exception as exc:
+        return f"錯誤: {exc}"
 
 def fetch_json(url: str, params: dict[str, str]) -> dict:
     full = f"{url}?{urllib.parse.urlencode(params)}"
