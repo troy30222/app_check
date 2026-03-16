@@ -150,21 +150,19 @@ def get_google_play_rank(keyword: str, target_package_id: str, country: str = "t
 def get_app_store_rank_by_id(keyword: str, target_apple_id: str, country: str = "tw") -> str:
     url = "https://itunes.apple.com/search"
     params = {"term": keyword, "country": country, "entity": "software", "limit": 100}
+
     try:
         resp = requests.get(url, params=params, timeout=20)
         resp.raise_for_status()
-        results = resp.json().get("results", [])
-        for idx, item in enumerate(results):
 
-    try:
-        data = fetch_json(
-            "https://itunes.apple.com/search",
-            {"term": keyword, "country": country, "entity": "software", "limit": "100"},
-        )
-        for idx, item in enumerate(data.get("results", [])):
+        results = resp.json().get("results", [])
+
+        for idx, item in enumerate(results):
             if str(item.get("trackId")) == str(target_apple_id):
                 return str(idx + 1)
+
         return "100+ (未進榜)"
+
     except Exception as exc:
         return f"錯誤: {exc}"
 
