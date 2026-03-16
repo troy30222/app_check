@@ -1,5 +1,5 @@
-streamlit==1.38.0
-requests==2.32.3
-google-play-scraper==1.2.7
-pillow==10.3.0
+streamlit
+requests
+google-play-scraper
+pillow
 # v1 使用 Python 標準函式庫即可執行（無額外依賴）
