@@ -17,7 +17,7 @@ except Exception:
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "aso_history.db"
-=======
+
 import html
 import json
 import os
@@ -111,7 +111,7 @@ def get_google_play_rank(keyword: str, target_package_id: str, country: str = "t
         results = gp_search(keyword, lang=lang, country=country, n_hits=100)
         for idx, item in enumerate(results):
             if item.get("appId") == target_package_id:
-=======
+
 def fetch_json(url: str, params: dict[str, str]) -> dict:
     full = f"{url}?{urllib.parse.urlencode(params)}"
     req = urllib.request.Request(full, headers={"User-Agent": "Mozilla/5.0"})
@@ -155,7 +155,7 @@ def get_app_store_rank_by_id(keyword: str, target_apple_id: str, country: str = 
         resp.raise_for_status()
         results = resp.json().get("results", [])
         for idx, item in enumerate(results):
-=======
+
     try:
         data = fetch_json(
             "https://itunes.apple.com/search",
@@ -177,7 +177,7 @@ def save_check(country: str, android_app_id: str, ios_app_id: str, keywords: lis
         (created_at, country, android_app_id, ios_app_id, json.dumps(keywords, ensure_ascii=False)),
     )
     check_id = int(cur.lastrowid)
-=======
+
     check_id = cur.lastrowid
     conn.executemany(
         "INSERT INTO rankings (check_id, platform, keyword, rank_text) VALUES (?, ?, ?, ?)",
@@ -188,7 +188,7 @@ def save_check(country: str, android_app_id: str, ios_app_id: str, keywords: lis
 
 
 def get_recent_checks(limit: int = 10) -> list[dict[str, Any]]:
-=======
+
 def get_recent_checks(limit: int = 10) -> list[dict]:
     conn = get_conn()
     checks = conn.execute(
@@ -196,7 +196,7 @@ def get_recent_checks(limit: int = 10) -> list[dict]:
         (limit,),
     ).fetchall()
     payload: list[dict[str, Any]] = []
-=======
+
     payload = []
     for c in checks:
         rankings = conn.execute(
@@ -204,7 +204,7 @@ def get_recent_checks(limit: int = 10) -> list[dict]:
             (c["id"],),
         ).fetchall()
         payload.append({"check": dict(c), "rankings": [dict(r) for r in rankings]})
-=======
+
         payload.append({"check": dict(c), "rankings": [dict(x) for x in rankings]})
     conn.close()
     return payload
@@ -281,7 +281,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-=======
+
 def render_page(result_rows: list[dict] | None = None, selected_country: str = "tw", android_app_id: str = "com.johnsonfitness.visionapp", ios_app_id: str = "6738464990", keywords_text: str | None = None) -> str:
     if keywords_text is None:
         keywords_text = "\n".join(DEFAULT_KEYWORDS)
